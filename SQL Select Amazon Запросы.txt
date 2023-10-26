@@ -1,0 +1,89 @@
+-- Для начала выведу все товары, которые содержат в названии ключевой поисковой запрос 'diabetic', сохраню как представление для дальнейшей работы
+
+CREATE VIEW DiabeticItemCa AS 
+SELECT
+title,
+reviews,
+price,
+listPrice,
+categoryName,
+isBestSeller,
+boughtInLastMonth
+FROM research_data rd 
+WHERE title LIKE '%diabet%';
+
+--Узнаю, сколько товаров представлено в Канадском сегменте. Получилось 763 товара
+
+SELECT COUNT(*)
+FROM research_data rd 
+WHERE title LIKE '%diabet%';
+
+
+--Узнаю месячный объем рынка. Для этого узнаю выручку по каждому товару за месяц, отсортировав по убыванию. Затем в следующем запросе узнаю итоговую выручку от продаж на Амазоне всех диабетических товаров.
+--Итого за месяц - 282207 долларов.
+
+SELECT 
+title,
+SUM(price * boughtInLastMonth) as TotalSales
+FROM research_data rd 
+WHERE title LIKE '%diabet%'
+Group BY 1
+ORDER BY TotalSales DESC;
+
+
+SELECT 
+SUM(price * boughtInLastMonth) as TotalSales
+FROM research_data rd 
+WHERE title LIKE '%diabet%';
+
+
+--Узнаю наиболее популярные категории товаров для диабетиков. Для этого подсчитаю количество товаров в каждой, расположу в порядке убывания. 
+Наиболее востребованы обувь, медицинские расходные материалы, часы, одежда и снеки.
+
+
+SELECT 
+  categoryName,
+  COUNT(*) AS TotalDiabeticProducts
+FROM research_data
+WHERE title LIKE '%diabetic%'
+GROUP BY categoryName
+ORDER BY TotalDiabeticProducts DESC;
+
+
+--Отберу 100 товаров с самыми большими продажами. Популярные теги: Supplement & Steeves Sugar, Sock aid device, Skin care, Test Strips & Glucose Monitor Kit, Foot Massager, Diabetic Socks, Sugar Free Treats, Diabetic Slippers & Shoes, Metatarsal Pads. 
+
+SELECT 
+title,
+SUM(price * boughtInLastMonth) as TotalSales
+FROM research_data rd 
+WHERE title LIKE '%diabet%' 
+Group BY 1
+ORDER BY TotalSales DESC
+LIMIT 100
+
+
+
+--Отберу 100 товаров с самым большим количеством отзывов, проанализирую категории. Чем больше отзывов, тем больше известен и востребован товар, а значит конкурентна ниша. С большим отрывом - Compression Socks. За ним Test Strips, диабетические носки, стельки, обувь. Основные товары, на которые оставляют отзывы - различные типы носков.     
+
+SELECT 
+title,
+stars,
+reviews 
+FROM research_data rd 
+WHERE title LIKE '%diabet%' 
+Group BY 1, 2, 3
+ORDER BY reviews DESC
+LIMIT 100
+
+
+
+--Выведу средние оценки и количество отзывов по категориям, чтобы оценить степень удовлетворенности покупателей. Оценки от 3 до 4 с достаточно большим количеством отзывов у категорий Sporting Apparel, Shoes, Sport Specific Clothing, Men's Clothing, Skin Care Products. Это означает, что в данных поднишах есть неудовлетворенный спрос на качественные товары и/или сервис. 
+
+SELECT
+  categoryName,
+  AVG(stars) AS AverageRating,
+  AVG(reviews) AS AverageReviews
+FROM research_data
+WHERE title LIKE '%diabet%'
+GROUP BY 1
+ORDER BY AverageRating ASC;
