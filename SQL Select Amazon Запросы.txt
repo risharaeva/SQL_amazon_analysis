@@ -1,6 +1,6 @@
--- Для начала выведу все товары, которые содержат в названии ключевой поисковой запрос 'diabetic', сохраню как представление для дальнейшей работы
+-- First, I will extract all products that contain the key search query 'diabetic' in their titles, saving it as a view for further work
 
-CREATE VIEW DiabeticItemCa AS 
+CREATE VIEW DiabeticItemCa AS
 SELECT
 title,
 reviews,
@@ -9,80 +9,71 @@ listPrice,
 categoryName,
 isBestSeller,
 boughtInLastMonth
-FROM research_data rd 
+FROM research_data rd
 WHERE title LIKE '%diabet%';
 
---Узнаю, сколько товаров представлено в Канадском сегменте. Получилось 763 товара
+-- I will find out how many products are available in the Canadian segment. There are 763 products.
 
 SELECT COUNT(*)
-FROM research_data rd 
+FROM research_data rd
 WHERE title LIKE '%diabet%';
 
+-- I will find out the monthly market volume. For this, I will calculate the revenue for each product over a month, sorted in descending order. Then in the next query, I will find out the total revenue from sales on Amazon of all diabetic products.
+-- Total for the month - $282,207.
 
---Узнаю месячный объем рынка. Для этого узнаю выручку по каждому товару за месяц, отсортировав по убыванию. Затем в следующем запросе узнаю итоговую выручку от продаж на Амазоне всех диабетических товаров.
---Итого за месяц - 282207 долларов.
-
-SELECT 
+SELECT
 title,
 SUM(price * boughtInLastMonth) as TotalSales
-FROM research_data rd 
+FROM research_data rd
 WHERE title LIKE '%diabet%'
 Group BY 1
 ORDER BY TotalSales DESC;
 
-
-SELECT 
+SELECT
 SUM(price * boughtInLastMonth) as TotalSales
-FROM research_data rd 
+FROM research_data rd
 WHERE title LIKE '%diabet%';
 
+-- I will find out the most popular categories of diabetic products. For this, I will count the number of products in each, arranged in descending order.
+The most demanded are shoes, medical consumables, watches, clothing, and snacks.
 
---Узнаю наиболее популярные категории товаров для диабетиков. Для этого подсчитаю количество товаров в каждой, расположу в порядке убывания. 
-Наиболее востребованы обувь, медицинские расходные материалы, часы, одежда и снеки.
-
-
-SELECT 
-  categoryName,
-  COUNT(*) AS TotalDiabeticProducts
+SELECT
+categoryName,
+COUNT(*) AS TotalDiabeticProducts
 FROM research_data
 WHERE title LIKE '%diabetic%'
 GROUP BY categoryName
 ORDER BY TotalDiabeticProducts DESC;
 
+-- I will select 100 products with the highest sales. Popular tags: Supplement & Steeves Sugar, Sock aid device, Skincare, Test Strips & Glucose Monitor Kit, Foot Massager, Diabetic Socks, Sugar-Free Treats, Diabetic Slippers & Shoes, Metatarsal Pads.
 
---Отберу 100 товаров с самыми большими продажами. Популярные теги: Supplement & Steeves Sugar, Sock aid device, Skin care, Test Strips & Glucose Monitor Kit, Foot Massager, Diabetic Socks, Sugar Free Treats, Diabetic Slippers & Shoes, Metatarsal Pads. 
-
-SELECT 
+SELECT
 title,
 SUM(price * boughtInLastMonth) as TotalSales
-FROM research_data rd 
-WHERE title LIKE '%diabet%' 
+FROM research_data rd
+WHERE title LIKE '%diabet%'
 Group BY 1
 ORDER BY TotalSales DESC
 LIMIT 100
 
+-- I will select 100 products with the highest number of reviews, and analyze the categories. The more reviews, the more known and in demand the product, meaning the niche is competitive. By a large margin - Compression Socks. Followed by Test Strips, diabetic socks, insoles, and shoes. The main products that receive reviews are various types of socks.
 
-
---Отберу 100 товаров с самым большим количеством отзывов, проанализирую категории. Чем больше отзывов, тем больше известен и востребован товар, а значит конкурентна ниша. С большим отрывом - Compression Socks. За ним Test Strips, диабетические носки, стельки, обувь. Основные товары, на которые оставляют отзывы - различные типы носков.     
-
-SELECT 
+SELECT
 title,
 stars,
-reviews 
-FROM research_data rd 
-WHERE title LIKE '%diabet%' 
+reviews
+FROM research_data rd
+WHERE title LIKE '%diabet%'
 Group BY 1, 2, 3
 ORDER BY reviews DESC
 LIMIT 100
 
-
-
---Выведу средние оценки и количество отзывов по категориям, чтобы оценить степень удовлетворенности покупателей. Оценки от 3 до 4 с достаточно большим количеством отзывов у категорий Sporting Apparel, Shoes, Sport Specific Clothing, Men's Clothing, Skin Care Products. Это означает, что в данных поднишах есть неудовлетворенный спрос на качественные товары и/или сервис. 
+-- I will display average ratings and number of reviews by categories to assess the degree of customer satisfaction. Ratings from 3 to 4 with a substantial number of reviews in categories such as Sporting Apparel, Shoes, Sport Specific Clothing, Men's Clothing, and Skin Care Products. This indicates that there is an unsatisfied demand for quality goods and/or services in these niches.
 
 SELECT
-  categoryName,
-  AVG(stars) AS AverageRating,
-  AVG(reviews) AS AverageReviews
+categoryName,
+AVG(stars) AS AverageRating,
+AVG(reviews) AS AverageReviews
 FROM research_data
 WHERE title LIKE '%diabet%'
 GROUP BY 1
