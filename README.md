@@ -1,8 +1,5 @@
 # SQL_amazon_analysis
-Анализ рынка товаров для диабетиков в Amazon Canada.
+A business in Canada, specializing in manufacturing special socks for people with diabetes, faces a decision regarding business development. They must choose either to expand their product line within Canada or to enter the European market. In this project, using a dataset extracted from Amazon over a month, I researched the niche of diabetic products with the goal of identifying in-demand and relatively non-competitive directions for expanding the assortment. Additionally, I assessed the overall market capacity.
 
-Перед бизнесом - производителем специальных носков для людей страдающих диабетом из Канады - стоит задача по развитию бизнеса. Либо расширять ассортиментную линейку в Канаде, либо выходить со своим ассортиментом на Европу. 
-В этом проекте на базе датасета с выгрузкой товаров за месяц из Амазона я исследовала нишу товаров для диабетиков с целью подобрать востребованные и относительно неконкурентные направления для расширения ассортимента, а также в целом изучила ёмкость рынка.
-
-Вывод 1: Ёмкость рынка достаточная для тестирования не более 2-3 новых направлений.  
-Вывод 2: Можно пробовать реализацию обуви, средств по уходу за кожей, а также специальной спортивной одежды для диабетиков. Спрос на них есть, но текущие предложения судя по отзывам не устраивают людей и им можно предложить продукт с лучшим качеством и лучшим сервисом чем у конкурентов.
+Conclusion 1: The market capacity is sufficient to test no more than 2-3 new directions.
+Conclusion 2: It is feasible to consider launching footwear, skin care products, and special sportswear for diabetics. There is a demand for these products, but based on reviews, the current offerings do not satisfy consumers. Therefore, there is an opportunity to introduce a product with better quality and better service than the competitors.
